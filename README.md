@@ -30,6 +30,27 @@ projects fill the large and offset slots; the third slot is always the "Next pro
 Search for `TODO` in `src/site.ts`. Image frames are placeholders; swap `Frame` for Astro's `<Image>` in
 `src/components/ProjectCard.astro` once screenshots exist.
 
+## Motion
+
+All motion lives in `src/scripts/motion.ts` (GSAP + ScrollTrigger + SplitText, Lenis smooth scroll). Markup opts in
+with data attributes:
+
+| Attribute | Effect |
+| --- | --- |
+| `data-hero-title`, `data-intro`, `data-intro-rule` | Page-load sequence |
+| `data-reveal="lines"` / `"up"` / `"stagger"` | Scroll reveals |
+| `data-rule` | Rule draws left to right |
+| `data-shot` + `data-shot-img` | Screenshot wipes in; full page scrolls inside the frame on hover |
+| `data-speed="0.1"` | Parallax drift (desktop only) |
+| `data-num` | Process numerals roll up |
+| `data-marquee` | Ticker that reacts to scroll speed and direction |
+| `data-cursor="Label"` | Custom cursor grows and shows the label |
+| `data-magnetic` | Button leans toward the pointer |
+
+With `prefers-reduced-motion`, or if the script fails, the page renders complete and static.
+
+Project screenshots are full-page captures (1280px wide) in `src/assets/work/`.
+
 ## Details
 
 - Press `G` (or the footer button) to show the 12-column grid overlay.

@@ -1,0 +1,18 @@
+---
+// Typographic ticker between hero and work. Moves with scroll velocity (see scripts/motion.ts).
+const words = ['Strategy', 'Design', 'Build', 'Launch', 'Support'];
+const run = [...words, ...words];
+---
+<div class="overflow-hidden border-y border-rule py-6 lg:py-8" aria-hidden="true">
+  <div data-marquee class="flex w-max">
+    {[0, 1].map(() => (
+      <div class="flex shrink-0 items-center">
+        {run.map((w) => (
+          <span class="flex items-center whitespace-nowrap text-[clamp(44px,7vw,112px)] font-[550] leading-none tracking-[-0.04em]">
+            {w}<span class="meta mx-8 align-middle text-charcoal lg:mx-12">/</span>
+          </span>
+        ))}
+      </div>
+    ))}
+  </div>
+</div>

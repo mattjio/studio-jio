@@ -1,23 +1,30 @@
 ---
+// Navy band. On desktop the section pins and the steps travel sideways as you scroll.
 import SectionHead from './SectionHead.astro';
 import { process, pad } from '../site';
-// Staggered placement: each step one third across and further down
-const place = ['lg:col-span-4', 'lg:col-span-4 lg:col-start-5 lg:mt-[120px]', 'lg:col-span-4 lg:col-start-9 lg:mt-[240px]'];
+const offset = ['', 'lg:mt-16', 'lg:mt-32'];
 ---
-<section id="process" class="section" aria-labelledby="process-title">
-  <div class="site-wrap">
-    <SectionHead id="process-title" title="How a project runs" meta="3 steps · about 6 weeks" />
-    <ol class="grid-12 gap-y-14 md:gap-y-12">
+<section id="process" data-process class="overflow-x-clip bg-navy text-bone" aria-labelledby="process-title">
+  <div class="site-wrap py-20 lg:flex lg:min-h-screen lg:flex-col lg:justify-center lg:py-16">
+    <SectionHead id="process-title" title="How a project runs" meta="3 steps · about 6 weeks" tone="light" />
+    <ol data-process-track class="grid gap-16 lg:flex lg:w-max lg:items-start lg:gap-10">
+      <li class="grid content-start gap-6 lg:w-[34vw] lg:shrink-0 lg:pr-10">
+        <p data-reveal="lines" class="text-[clamp(28px,3.2vw,48px)] font-medium leading-[1.1] tracking-[-0.02em]">
+          Six weeks. Three steps. One person from first call to launch.
+        </p>
+        <p data-reveal="up" class="meta text-bone/60 max-lg:hidden">Scroll to walk through it →</p>
+      </li>
       {process.map((step, i) => (
-        <li class:list={['col-span-12 grid content-start gap-[18px] md:col-span-6', place[i]]}>
-          <span class="text-[clamp(96px,12vw,184px)] font-medium leading-[0.8] tracking-[-0.06em] tabular-nums" aria-hidden="true">{pad(i + 1)}</span>
-          <h3 class="border-t border-navy pt-4 text-[32px]"><span class="sr-only">Step {i + 1}: </span>{step.name}</h3>
-          <p class="max-w-[34ch] text-charcoal">{step.body}</p>
-          <ul class="grid gap-1.5 text-[15px]">
-            {step.deliverables.map((d) => <li><span class="text-charcoal" aria-hidden="true">— </span>{d}</li>)}
+        <li data-step class:list={['grid content-start gap-5 lg:w-[36vw] lg:shrink-0', offset[i]]}>
+          <span data-num class="text-[clamp(120px,17vw,280px)] font-medium leading-[0.78] tracking-[-0.07em] tabular-nums" aria-hidden="true">{pad(i + 1)}</span>
+          <h3 class="relative pt-4 text-[clamp(28px,2.6vw,40px)]"><span data-rule class="absolute inset-x-0 top-0 h-px bg-bone/40" aria-hidden="true"></span><span class="sr-only">Step {i + 1}: </span>{step.name}</h3>
+          <p data-reveal="up" class="max-w-[38ch] text-bone/75">{step.body}</p>
+          <ul data-reveal="stagger" class="grid gap-1.5 text-[15px]">
+            {step.deliverables.map((d) => <li><span class="text-bone/50" aria-hidden="true">— </span>{d}</li>)}
           </ul>
         </li>
       ))}
     </ol>
+    <div class="mt-14 hidden h-px bg-bone/20 lg:block" aria-hidden="true"><div data-process-bar class="h-px origin-left scale-x-0 bg-bone"></div></div>
   </div>
 </section>

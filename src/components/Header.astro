@@ -8,7 +8,7 @@ const links = [
   { label: 'Contact', href: '#contact' },
 ];
 ---
-<header class="border-b border-rule">
+<header data-header class="sticky top-0 z-40 border-b border-rule bg-bone" style="top: env(safe-area-inset-top, 0px)">
   <div class="site-wrap flex items-center justify-between gap-4 py-[22px]">
     <a href="/" aria-label="Studio Jio home">
       <Image src={wordmark} alt="studio jio" height={26} densities={[1, 2]} class="block h-[26px] w-auto" loading="eager" />
