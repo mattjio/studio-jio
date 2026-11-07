@@ -1,0 +1,23 @@
+---
+import SectionHead from './SectionHead.astro';
+import { process, pad } from '../site';
+// Staggered placement: each step one third across and further down
+const place = ['lg:col-span-4', 'lg:col-span-4 lg:col-start-5 lg:mt-[120px]', 'lg:col-span-4 lg:col-start-9 lg:mt-[240px]'];
+---
+<section id="process" class="section" aria-labelledby="process-title">
+  <div class="site-wrap">
+    <SectionHead id="process-title" title="How a project runs" meta="3 steps · about 6 weeks" />
+    <ol class="grid-12 gap-y-14 md:gap-y-12">
+      {process.map((step, i) => (
+        <li class:list={['col-span-12 grid content-start gap-[18px] md:col-span-6', place[i]]}>
+          <span class="text-[clamp(96px,12vw,184px)] font-medium leading-[0.8] tracking-[-0.06em] tabular-nums" aria-hidden="true">{pad(i + 1)}</span>
+          <h3 class="border-t border-navy pt-4 text-[32px]"><span class="sr-only">Step {i + 1}: </span>{step.name}</h3>
+          <p class="max-w-[34ch] text-charcoal">{step.body}</p>
+          <ul class="grid gap-1.5 text-[15px]">
+            {step.deliverables.map((d) => <li><span class="text-charcoal" aria-hidden="true">— </span>{d}</li>)}
+          </ul>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>

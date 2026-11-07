@@ -1,0 +1,22 @@
+---
+import { Image } from 'astro:assets';
+import wordmark from '../assets/brand/word-navy.png';
+const links = [
+  { label: 'Work', href: '#work' },
+  { label: 'Process', href: '#process' },
+  { label: 'Studio', href: '#studio' },
+  { label: 'Contact', href: '#contact' },
+];
+---
+<header class="border-b border-rule">
+  <div class="site-wrap flex items-center justify-between gap-4 py-[22px]">
+    <a href="/" aria-label="Studio Jio home">
+      <Image src={wordmark} alt="studio jio" height={26} densities={[1, 2]} class="block h-[26px] w-auto" loading="eager" />
+    </a>
+    <nav aria-label="Main" class="flex gap-7 text-[15px] font-medium">
+      {links.map((l, i) => (
+        <a href={l.href} class:list={['no-underline underline-offset-4 hover:underline', i < links.length - 1 && 'max-sm:hidden']}>{l.label}</a>
+      ))}
+    </nav>
+  </div>
+</header>

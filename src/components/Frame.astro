@@ -1,0 +1,8 @@
+---
+// Placeholder frame for photography. Swap for <Image> once real shots exist.
+interface Props { note: string; ratio: string; class?: string }
+const { note, ratio, class: cls } = Astro.props;
+---
+<div class:list={['flex max-w-full items-end bg-frame p-3.5', cls]} style={`aspect-ratio:${ratio}`} role="img" aria-label={`Image placeholder: ${note}`}>
+  <span class="meta text-[11px] text-charcoal/75">{note}</span>
+</div>

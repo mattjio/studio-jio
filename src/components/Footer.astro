@@ -1,0 +1,49 @@
+---
+import { Image } from 'astro:assets';
+import mark from '../assets/brand/mark-navy.png';
+import { site } from '../site';
+const year = new Date().getFullYear();
+---
+<footer class="pt-16 pb-8">
+  <div class="site-wrap">
+    <div class="grid-12 gap-y-10">
+      <Image src={mark} alt="Studio Jio" height={56} densities={[1, 2]} class="col-span-12 h-14 w-auto lg:col-span-3" />
+      <div class="col-span-6 grid content-start gap-2 text-[15px] lg:col-span-2 lg:col-start-6">
+        <span class="meta text-charcoal">Site</span>
+        <a class="no-underline hover:underline" href="#work">Work</a>
+        <a class="no-underline hover:underline" href="#process">Process</a>
+        <a class="no-underline hover:underline" href="#studio">Studio</a>
+      </div>
+      <div class="col-span-6 grid content-start gap-2 text-[15px] lg:col-span-2">
+        <span class="meta text-charcoal">Elsewhere</span>
+        {site.social.map((s) => <a class="no-underline hover:underline" href={s.href}>{s.label}</a>)}
+      </div>
+      <div class="col-span-12 grid content-start gap-2 text-[15px] lg:col-span-3">
+        <span class="meta text-charcoal">Studio time</span>
+        <span data-clock data-tz={site.timeZone} data-place={site.location.split(',')[0]}>{site.location}</span>
+        <a class="no-underline hover:underline" href={`mailto:${site.email}`}>{site.email}</a>
+      </div>
+    </div>
+    <div class="meta mt-[72px] flex flex-wrap items-center justify-between gap-x-8 gap-y-3 border-t border-rule pt-4">
+      <span>© <span data-year>{year}</span> {site.name} · {site.tagline}</span>
+      <span>{site.version} · {site.domain}</span>
+      <button type="button" data-grid-toggle aria-pressed="false" class="meta cursor-pointer border border-navy px-2.5 py-1 aria-pressed:bg-navy aria-pressed:text-bone">
+        <kbd class="font-mono">G</kbd> Grid
+      </button>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-year]').forEach((el) => (el.textContent = String(new Date().getFullYear())));
+  const tick = () => {
+    document.querySelectorAll<HTMLElement>('[data-clock]').forEach((el) => {
+      try {
+        const t = new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit', timeZone: el.dataset.tz, timeZoneName: 'short' }).format(new Date());
+        el.textContent = `${t} · ${el.dataset.place}`;
+      } catch {}
+    });
+  };
+  tick();
+  setInterval(tick, 30_000);
+</script>

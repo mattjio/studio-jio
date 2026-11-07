@@ -1,0 +1,23 @@
+---
+import { site } from '../site';
+---
+<section class="pt-[clamp(72px,10vw,144px)] pb-12">
+  <div class="site-wrap">
+    <div class="grid-12">
+      <h1 class="col-span-12 text-[clamp(52px,9vw,148px)] lg:col-span-10">{site.headline}</h1>
+      <div class="col-span-12 mt-10 grid justify-items-start gap-8 lg:col-span-5 lg:col-start-7 lg:mt-14">
+        <p class="max-w-[38ch] text-xl text-charcoal">
+          Studio Jio plans, designs and builds websites for founders and local businesses. We start with what the
+          site has to do, then make every page earn its place.
+        </p>
+        <a class="btn btn-navy" href="#contact">{site.ctaLabel} <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+    <div class="meta mt-16 flex flex-wrap justify-between gap-x-10 gap-y-2 border-t border-rule pt-4 lg:mt-24">
+      <span>{site.tagline}</span>
+      <span>Strategy · Design · Build</span>
+      <span>{site.location}</span>
+      <span>{site.availability}</span>
+    </div>
+  </div>
+</section>

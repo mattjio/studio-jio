@@ -1,0 +1,29 @@
+---
+// Developer detail: press G (or the footer button) to show the 12-column grid.
+---
+<div data-grid-overlay hidden aria-hidden="true" class="pointer-events-none fixed inset-0 z-50">
+  <div class="site-wrap h-full">
+    <div class="grid-12 h-full max-lg:grid-cols-4">
+      {Array.from({ length: 12 }, (_, i) => (
+        <i class:list={['border-x border-navy/15 bg-navy/[0.07]', i >= 4 && 'max-lg:hidden']}></i>
+      ))}
+    </div>
+  </div>
+</div>
+
+<script>
+  const overlay = document.querySelector<HTMLElement>('[data-grid-overlay]');
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-grid-toggle]');
+  const set = (on: boolean) => {
+    if (!overlay) return;
+    overlay.hidden = !on;
+    buttons.forEach((b) => b.setAttribute('aria-pressed', String(on)));
+  };
+  buttons.forEach((b) => b.addEventListener('click', () => set(!!overlay?.hidden)));
+  document.addEventListener('keydown', (e) => {
+    const t = e.target as HTMLElement | null;
+    if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.key === 'g' || e.key === 'G') set(!!overlay?.hidden);
+  });
+</script>

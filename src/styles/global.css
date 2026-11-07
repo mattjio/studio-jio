@@ -1,0 +1,64 @@
+@import "tailwindcss";
+@import "@fontsource/geist/400.css";
+@import "@fontsource/geist/500.css";
+@import "@fontsource/geist/600.css";
+@import "@fontsource/geist-mono/400.css";
+@import "@fontsource/geist-mono/500.css";
+
+/* Brand tokens. Bone is the canvas, navy carries type and structure. */
+@theme {
+  --color-bone: #EAE6DF;
+  --color-navy: #142337;
+  --color-charcoal: #292B2D;
+  --color-frame: #DDD7CC;
+  --color-rule: rgb(20 35 55 / 0.18);
+
+  --font-sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --container-site: 1440px;
+}
+
+@layer base {
+  html { color-scheme: light; }
+  body {
+    @apply bg-bone text-navy font-sans antialiased;
+    font-size: 18px;
+    line-height: 1.55;
+  }
+  h1, h2, h3 {
+    font-weight: 550;
+    letter-spacing: -0.035em;
+    line-height: 0.98;
+    text-wrap: balance;
+  }
+  :focus-visible { outline: 2px solid var(--color-navy); outline-offset: 3px; }
+  ::selection { background: var(--color-navy); color: var(--color-bone); }
+}
+
+@layer components {
+  /* Page container: 1440 max, 20px gutter on phones, 48px on desktop */
+  .site-wrap {
+    @apply mx-auto w-full max-w-site;
+    padding-left: max(20px, env(safe-area-inset-left, 0px));
+    padding-right: max(20px, env(safe-area-inset-right, 0px));
+  }
+  @media (width >= 64rem) {
+    .site-wrap {
+      padding-left: max(48px, env(safe-area-inset-left, 0px));
+      padding-right: max(48px, env(safe-area-inset-right, 0px));
+    }
+  }
+  .grid-12 { @apply grid grid-cols-12 gap-x-4 lg:gap-x-6; }
+  .meta { @apply font-mono text-xs font-medium uppercase tracking-[0.08em]; }
+  .section { @apply py-20 lg:py-32; }
+  .btn {
+    @apply inline-flex items-center gap-3 border-[1.5px] border-current px-[22px] py-4 text-base font-medium no-underline transition-colors duration-200;
+  }
+  .btn-navy:hover { @apply bg-navy text-bone border-navy; }
+  .btn-bone:hover { @apply bg-bone text-navy border-bone; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
