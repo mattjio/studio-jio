@@ -103,3 +103,6 @@
 /* SplitText masks: keep descenders visible inside line masks */
 [data-hero-title] .line-mask,
 [data-reveal="lines"] > div { padding-bottom: 0.06em; margin-bottom: -0.06em; }
+
+/* Hero reel: later slides start wiped out; the motion script cycles them */
+.reel-hidden { clip-path: inset(0 0 0 100%); }

@@ -1,16 +1,20 @@
 ---
 import { site } from '../site';
+import HeroReel from './HeroReel.astro';
 ---
-<section class="pt-[clamp(72px,10vw,144px)] pb-12">
+<section data-hero class="overflow-x-clip pt-[clamp(64px,8vw,120px)] pb-12">
   <div class="site-wrap">
-    <div class="grid-12">
-      <h1 data-hero-title class="col-span-12 text-[clamp(52px,9vw,148px)] lg:col-span-10">{site.headline}</h1>
-      <div class="col-span-12 mt-10 grid justify-items-start gap-8 lg:col-span-5 lg:col-start-7 lg:mt-14">
+    <h1 data-hero-title class="text-[clamp(54px,10.4vw,170px)] leading-[0.94]">{site.headline}</h1>
+    <div class="grid-12 mt-12 gap-y-12 lg:mt-20">
+      <div class="col-span-12 grid content-start justify-items-start gap-8 lg:col-span-5">
         <p data-intro class="max-w-[38ch] text-xl text-charcoal">
           Studio Jio plans, designs and builds websites for founders and local businesses. We start with what the
           site has to do, then make every page earn its place.
         </p>
         <a data-intro data-magnetic class="btn btn-navy" href="#contact">{site.ctaLabel} <span aria-hidden="true">→</span></a>
+      </div>
+      <div data-intro class="col-span-12 lg:col-span-6 lg:col-start-7">
+        <HeroReel />
       </div>
     </div>
     <div class="relative mt-16 pt-4 lg:mt-24">
