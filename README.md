@@ -54,6 +54,7 @@ Project screenshots are full-page captures (1280px wide) in `src/assets/work/`.
 ## Details
 
 - Press `G` (or the footer button) to show the 12-column grid overlay.
+- Press `D` (or the header button) to switch light and dark. The choice is remembered; until then the site follows the device setting. Dark values live in the `[data-theme="dark"]` block of `global.css`.
 - Footer clock shows studio time in `site.timeZone`.
 
 ## Deploy

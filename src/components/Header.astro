@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import wordmark from '../assets/brand/word-navy.png';
+import wordmarkBone from '../assets/brand/word-bone.png';
 const links = [
   { label: 'Work', href: '#work' },
   { label: 'Process', href: '#process' },
@@ -11,12 +12,16 @@ const links = [
 <header data-header class="sticky top-0 z-40 border-b border-rule bg-bone" style="top: env(safe-area-inset-top, 0px)">
   <div class="site-wrap flex items-center justify-between gap-4 py-[22px]">
     <a href="/" aria-label="Studio Jio home">
-      <Image src={wordmark} alt="studio jio" height={26} densities={[1, 2]} class="block h-[26px] w-auto" loading="eager" />
+      <Image src={wordmark} alt="studio jio" height={26} densities={[1, 2]} class="logo-on-light block h-[26px] w-auto" loading="eager" />
+      <Image src={wordmarkBone} alt="studio jio" height={26} densities={[1, 2]} class="logo-on-dark h-[26px] w-auto" loading="eager" />
     </a>
-    <nav aria-label="Main" class="flex gap-7 text-[15px] font-medium">
+    <nav aria-label="Main" class="flex items-center gap-7 text-[15px] font-medium">
       {links.map((l, i) => (
         <a href={l.href} class:list={['no-underline underline-offset-4 hover:underline', i < links.length - 1 && 'max-sm:hidden']}>{l.label}</a>
       ))}
+      <button type="button" data-theme-toggle class="meta cursor-pointer border border-navy px-2.5 py-1.5 transition-colors hover:bg-navy hover:text-bone" aria-label="Switch colour theme">
+        <kbd class="font-mono max-sm:hidden">D</kbd> <span data-theme-label>Dark</span>
+      </button>
     </nav>
   </div>
 </header>

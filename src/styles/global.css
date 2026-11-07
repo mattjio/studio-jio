@@ -106,3 +106,29 @@
 
 /* Hero reel: later slides start wiped out; the motion script cycles them */
 .reel-hidden { clip-path: inset(0 0 0 100%); }
+
+/* ---------- Dark theme ----------
+   Swaps canvas and ink, so every bg-bone / text-navy pairing (and the inverted
+   navy bands) flips without per-component rules. */
+:root[data-theme="dark"] {
+  --color-bone: #142337;
+  --color-navy: #EAE6DF;
+  --color-charcoal: #B9B4AB;
+  --color-frame: #1D2E47;
+  --color-rule: rgb(234 230 223 / 0.16);
+  color-scheme: dark;
+}
+
+/* Logo files come in navy and bone; show the one that reads on the current canvas */
+.logo-on-dark { display: none; }
+:root[data-theme="dark"] .logo-on-light { display: none; }
+:root[data-theme="dark"] .logo-on-dark { display: block; }
+
+/* Theme switch: the new theme wipes down over the old one */
+::view-transition-old(root),
+::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+::view-transition-new(root) { animation: theme-wipe 0.9s cubic-bezier(0.77, 0, 0.18, 1); }
+@keyframes theme-wipe {
+  from { clip-path: inset(0 0 100% 0); }
+  to { clip-path: inset(0 0 0 0); }
+}

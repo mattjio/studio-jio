@@ -1,13 +1,17 @@
 ---
 import { Image } from 'astro:assets';
 import mark from '../assets/brand/mark-navy.png';
+import markBone from '../assets/brand/mark-bone.png';
 import { site } from '../site';
 const year = new Date().getFullYear();
 ---
 <footer class="pt-16 pb-8">
   <div class="site-wrap">
     <div class="grid-12 gap-y-10">
-      <Image src={mark} alt="Studio Jio" height={56} densities={[1, 2]} class="col-span-12 h-14 w-auto lg:col-span-3" />
+      <div class="col-span-12 lg:col-span-3">
+        <Image src={mark} alt="Studio Jio" height={56} densities={[1, 2]} class="logo-on-light h-14 w-auto" />
+        <Image src={markBone} alt="Studio Jio" height={56} densities={[1, 2]} class="logo-on-dark h-14 w-auto" />
+      </div>
       <div class="col-span-6 grid content-start gap-2 text-[15px] lg:col-span-2 lg:col-start-6">
         <span class="meta text-charcoal">Site</span>
         <a class="no-underline hover:underline" href="#work">Work</a>

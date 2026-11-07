@@ -14,6 +14,12 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   <head>
     <meta charset="utf-8" />
     <script is:inline>
+      (function () {
+        var t;
+        try { t = localStorage.getItem('theme'); } catch (e) {}
+        if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.dataset.theme = t;
+      })();
       if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
         document.documentElement.classList.add('motion');
         setTimeout(() => document.documentElement.classList.add('motion-ready'), 3000);
@@ -23,7 +29,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    <meta name="theme-color" content="#EAE6DF" />
+    <meta name="theme-color" content="#EAE6DF" data-theme-color />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta property="og:type" content="website" />
@@ -38,6 +44,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <div data-cursor-dot aria-hidden="true"><span data-cursor-label></span></div>
     <script>
       import '../scripts/motion.ts';
+      import '../scripts/theme.ts';
     </script>
   </body>
 </html>
