@@ -3,7 +3,7 @@ interface Props { title: string; meta: string; id?: string; tone?: 'dark' | 'lig
 const { title, meta, id, tone = 'dark' } = Astro.props;
 ---
 <div class="relative mb-12 flex items-baseline justify-between gap-4 pt-4 lg:mb-16">
-  <span data-rule class:list={['absolute inset-x-0 top-0 h-px', tone === 'light' ? 'bg-bone' : 'bg-navy']} aria-hidden="true"></span>
+  <span data-rule class:list={['absolute inset-x-0 top-0 h-px', tone === 'light' ? 'bg-band-ink' : 'bg-navy']} aria-hidden="true"></span>
   <h2 id={id} data-reveal="lines" class="text-[clamp(32px,4vw,56px)]">{title}</h2>
   <span data-reveal="up" class="meta">{meta}</span>
 </div>

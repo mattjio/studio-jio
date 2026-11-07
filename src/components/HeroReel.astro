@@ -13,12 +13,12 @@ const total = projects.length + 1;
     {projects.map((p, i) => (
       <div data-reel-slide class:list={['absolute inset-0 overflow-hidden', i > 0 && 'reel-hidden']}>
         <Image data-reel-img src={p.data.image!} alt={`${p.data.title} website`} widths={[640, 960, 1280]} sizes="(min-width: 1024px) 50vw, 100vw" loading="eager" class="absolute inset-x-0 top-0 block h-auto w-full will-change-transform" />
-        <div class="meta absolute inset-x-0 bottom-0 flex justify-between gap-4 bg-navy px-4 py-3 text-bone">
+        <div class="meta absolute inset-x-0 bottom-0 flex justify-between gap-4 bg-band px-4 py-3 text-band-ink">
           <span>{pad(i + 1)} / {pad(total)} · {p.data.title}</span><span class="max-sm:hidden">{p.data.sector} · {p.data.year}</span>
         </div>
       </div>
     ))}
-    <div data-reel-slide class="reel-hidden absolute inset-0 flex flex-col justify-between bg-navy p-6 text-bone">
+    <div data-reel-slide class="reel-hidden absolute inset-0 flex flex-col justify-between bg-band p-6 text-band-ink">
       <span class="meta">{pad(total)} / {pad(total)} · Next project</span>
       <span class="text-[clamp(36px,4.6vw,72px)] font-[550] leading-[0.96] tracking-[-0.035em]">Yours could be here.</span>
       <span class="meta">2027</span>

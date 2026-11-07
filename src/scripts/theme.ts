@@ -10,7 +10,7 @@ const current = (): Theme => (root.dataset.theme === 'dark' ? 'dark' : 'light');
 
 const paint = (theme: Theme) => {
   root.dataset.theme = theme;
-  metaColor?.setAttribute('content', theme === 'dark' ? '#142337' : '#EAE6DF');
+  metaColor?.setAttribute('content', theme === 'dark' ? '#0C1522' : '#EAE6DF');
   document.querySelectorAll<HTMLElement>('[data-theme-label]').forEach((el) => {
     el.textContent = theme === 'dark' ? 'Light' : 'Dark';
   });
