@@ -1,19 +1,25 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import Shot from './Shot.astro';
 import Frame from './Frame.astro';
 import { pad } from '../site';
 
-interface Props { project: CollectionEntry<'projects'>; ratio: string; class?: string }
-const { project, ratio, class: cls } = Astro.props;
+interface Props { project: CollectionEntry<'projects'>; ratio: string; speed?: number; class?: string }
+const { project, ratio, speed = 0, class: cls } = Astro.props;
 const p = project.data;
 const host = new URL(p.url).host.replace(/^www\./, '');
 ---
-<article class:list={['grid content-start gap-4', cls]}>
-  <Frame note={p.imageNote} ratio={ratio} />
-  <div class="meta flex justify-between gap-4 border-t border-rule pt-3">
-    <span>{pad(p.order)} · {p.sector}</span><span>{p.year}</span>
+<article data-speed={speed} class:list={['grid content-start gap-4', cls]}>
+  {p.image ? (
+    <Shot src={p.image} alt={`${p.title} website`} ratio={ratio} href={p.url} />
+  ) : (
+    <Frame note={p.imageNote} ratio={ratio} />
+  )}
+  <div class="relative pt-3">
+    <span data-rule class="absolute inset-x-0 top-0 h-px bg-rule" aria-hidden="true"></span>
+    <div class="meta flex justify-between gap-4"><span>{pad(p.order)} · {p.sector}</span><span>{p.year}</span></div>
   </div>
-  <h3 class="text-[clamp(28px,3vw,40px)]">{p.title}</h3>
-  <p class="max-w-[46ch] text-charcoal">{p.summary}{p.result && ` ${p.result}`}</p>
-  <a class="text-[15px] font-medium underline-offset-4" href={p.url} target="_blank" rel="noopener">{host} ↗</a>
+  <h3 data-reveal="lines" class="text-[clamp(28px,3vw,40px)]">{p.title}</h3>
+  <p data-reveal="up" class="max-w-[46ch] text-charcoal">{p.summary}{p.result && ` ${p.result}`}</p>
+  <a data-reveal="up" class="justify-self-start text-[15px] font-medium underline-offset-4" href={p.url} target="_blank" rel="noopener">{host} ↗</a>
 </article>

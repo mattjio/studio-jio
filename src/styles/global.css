@@ -62,3 +62,44 @@
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }
+
+/* ---------- Motion ---------- */
+/* Hide intro elements only until the motion script has set their start states (3s failsafe in Base). */
+.motion:not(.motion-ready) [data-header],
+.motion:not(.motion-ready) [data-hero-title],
+.motion:not(.motion-ready) [data-intro] {
+  visibility: hidden;
+}
+
+[data-cursor-dot] {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 70;
+  display: none;
+  width: 10px;
+  height: 10px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: var(--color-navy);
+  color: var(--color-bone);
+  box-shadow: 0 0 0 1px rgb(234 230 223 / 0.45);
+  pointer-events: none;
+}
+.has-cursor [data-cursor-dot] { display: flex; }
+[data-cursor-dot].is-light { background: var(--color-bone); color: var(--color-navy); }
+[data-cursor-label] {
+  visibility: hidden;
+  opacity: 0;
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* SplitText masks: keep descenders visible inside line masks */
+[data-hero-title] .line-mask,
+[data-reveal="lines"] > div { padding-bottom: 0.06em; margin-bottom: -0.06em; }

@@ -6,11 +6,11 @@ import { values, pad } from '../site';
   <div class="site-wrap">
     <SectionHead id="studio-title" title="The studio" meta="Est. 2026" />
     <div class="grid-12 gap-y-10">
-      <p class="col-span-12 text-[clamp(28px,3.2vw,44px)] font-medium leading-[1.15] tracking-[-0.02em] lg:col-span-7">
+      <p data-reveal="lines" class="col-span-12 text-[clamp(28px,3.2vw,44px)] font-medium leading-[1.15] tracking-[-0.02em] lg:col-span-7">
         A small studio by design. You work directly with the person who plans, designs and codes your site, from first
         call to launch day.
       </p>
-      <ul class="meta col-span-12 self-end lg:col-span-4 lg:col-start-9">
+      <ul data-reveal="stagger" class="meta col-span-12 self-end lg:col-span-4 lg:col-start-9">
         {values.map((v, i) => (
           <li class="flex justify-between border-t border-rule py-3.5 last:border-b">
             <span>{v}</span><span>{pad(i + 1)}</span>

@@ -2,7 +2,8 @@
 interface Props { title: string; meta: string; id?: string }
 const { title, meta, id } = Astro.props;
 ---
-<div class="mb-12 flex items-baseline justify-between gap-4 border-t border-navy pt-4 lg:mb-16">
-  <h2 id={id} class="text-[clamp(32px,4vw,56px)]">{title}</h2>
-  <span class="meta">{meta}</span>
+<div class="relative mb-12 flex items-baseline justify-between gap-4 pt-4 lg:mb-16">
+  <span data-rule class="absolute inset-x-0 top-0 h-px bg-navy" aria-hidden="true"></span>
+  <h2 id={id} data-reveal="lines" class="text-[clamp(32px,4vw,56px)]">{title}</h2>
+  <span data-reveal="up" class="meta">{meta}</span>
 </div>
