@@ -269,13 +269,19 @@ function process() {
   if (!section || !track) return;
 
   const rollIn = (el: HTMLElement, trigger: ScrollTrigger.Vars) => {
-    const split = SplitText.create(el, { type: 'chars', mask: 'chars' });
+    const split = SplitText.create(el, { type: 'chars', mask: 'chars', charsClass: 'num-char' });
     gsap.from(split.chars, { yPercent: 110, duration: 1.3, ease: 'expo.out', stagger: 0.12, scrollTrigger: trigger });
   };
 
   const mm = gsap.matchMedia();
   mm.add('(min-width: 64rem)', () => {
-    const distance = () => Math.max(0, track.scrollWidth - track.parentElement!.clientWidth);
+    // Travel until the last step's right edge meets the content edge, not the padded box edge
+    const distance = () => {
+      const wrap = track.parentElement!;
+      const cs = getComputedStyle(wrap);
+      const inner = wrap.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+      return Math.max(0, track.scrollWidth - inner);
+    };
     const slide = gsap.to(track, {
       x: () => -distance(),
       ease: 'none',
