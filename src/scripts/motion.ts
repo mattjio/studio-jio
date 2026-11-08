@@ -29,7 +29,7 @@ function init() {
   shots();
   process();
   marquee(lenis);
-  header(lenis);
+  menuScrollLock(lenis);
   if (finePointer) {
     cursor(lenis);
     magnetic();
@@ -64,7 +64,7 @@ function intro() {
   const hero = document.querySelector<HTMLElement>('[data-hero]');
   const title = document.querySelector<HTMLElement>('[data-hero-title]');
 
-  tl.from('[data-header]', { yPercent: -100, duration: 1.1 }, 0);
+  tl.from('[data-header] > div > *', { y: -24, autoAlpha: 0, duration: 1.1, stagger: 0.06 }, 0);
   if (title && hero) {
     let introDone = false;
     let drift: gsap.core.Tween[] = [];
@@ -326,17 +326,12 @@ function marquee(lenis: Lenis) {
   });
 }
 
-/* Header tucks away on the way down and returns on the way up */
-function header(lenis: Lenis) {
-  const el = document.querySelector<HTMLElement>('[data-header]');
-  if (!el) return;
-  let hidden = false;
-  lenis.on('scroll', ({ scroll, direction }: { scroll: number; direction: number }) => {
-    const hide = scroll > 160 && direction === 1;
-    if (hide === hidden) return;
-    hidden = hide;
-    gsap.to(el, { yPercent: hide ? -100 : 0, duration: 0.6, ease: 'expo.out' });
-  });
+/* While the full-screen phone menu is open, the page behind it stays put */
+function menuScrollLock(lenis: Lenis) {
+  new MutationObserver(() => {
+    if (root.classList.contains('menu-open')) lenis.stop();
+    else lenis.start();
+  }).observe(root, { attributes: true, attributeFilter: ['class'] });
 }
 
 /* A small navy cursor that grows into a labelled disc over projects.
