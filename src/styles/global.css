@@ -106,3 +106,10 @@
 
 /* Hero reel: later slides start wiped out; the motion script cycles them */
 .reel-hidden { clip-path: inset(0 0 0 100%); }
+
+/* Big numerals use tight tracking, so each glyph is wider than its advance.
+   Widen the roll-in mask without moving anything, so the digits aren't sliced on the right. */
+.num-char-mask {
+  padding-inline: 0.12em;
+  margin-inline: -0.12em;
+}
