@@ -1,22 +1,156 @@
 ---
 import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
 import wordmark from '../assets/brand/word-navy.png';
+import mark from '../assets/brand/mark-navy.png';
+import { pad, site } from '../site';
+
+const projectCount = (await getCollection('projects', ({ data }) => data.featured)).length;
 const links = [
-  { label: 'Work', href: '#work' },
+  { label: 'Work', href: '#work', note: `${pad(projectCount)} projects` },
   { label: 'Process', href: '#process' },
   { label: 'Studio', href: '#studio' },
   { label: 'Contact', href: '#contact' },
 ];
+const place = site.location.split(',')[0];
 ---
-<header data-header class="sticky top-0 z-40 border-b border-rule bg-bone" style="top: env(safe-area-inset-top, 0px)">
-  <div class="site-wrap flex items-center justify-between gap-4 py-[22px]">
-    <a href="/" aria-label="Studio Jio home">
-      <Image src={wordmark} alt="studio jio" height={26} densities={[1, 2]} class="block h-[26px] w-auto" loading="eager" />
+<!-- Letterhead: laid on the 12-column grid at the top of the page. Once it scrolls
+     away, a floating mark and a Menu button take over (see the script below). -->
+<header data-header class="site-wrap pt-[22px] pb-5">
+  <div class="flex items-center justify-between lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-6">
+    <a href="#" aria-label="Studio Jio home" class="lg:col-span-3">
+      <Image src={wordmark} alt="studio jio" height={30} densities={[1, 2]} class="block h-6 w-auto lg:h-[30px]" loading="eager" />
     </a>
-    <nav aria-label="Main" class="flex gap-7 text-[15px] font-medium">
-      {links.map((l, i) => (
-        <a href={l.href} class:list={['no-underline underline-offset-4 hover:underline', i < links.length - 1 && 'max-sm:hidden']}>{l.label}</a>
+
+    <nav aria-label="Main" class="hidden text-[15px] lg:col-span-4 lg:col-start-5 lg:grid lg:grid-cols-2 lg:gap-x-6">
+      <span class="meta col-span-2 mb-1.5 text-[11px] text-charcoal">Index</span>
+      {[links.slice(0, 2), links.slice(2)].map((col) => (
+        <div class="grid content-start gap-0.5">
+          {col.map((l) => (
+            <a href={l.href} data-nav-link class="lh-link group">
+              {l.label}<span class="lh-arrow" aria-hidden="true">←</span>
+            </a>
+          ))}
+        </div>
       ))}
     </nav>
+
+    <div class="hidden text-[15px] lg:col-span-2 lg:grid lg:content-start lg:gap-0.5">
+      <span class="meta mb-1.5 text-[11px] text-charcoal">Studio time</span>
+      <span data-clock data-tz={site.timeZone} data-place={place}>{site.location}</span>
+    </div>
+
+    <div class="hidden text-right text-[15px] lg:col-span-2 lg:col-start-11 lg:grid lg:content-start lg:justify-items-end lg:gap-0.5">
+      <span class="meta mb-1.5 text-[11px] text-charcoal">New projects</span>
+      <span>{site.availability}</span>
+      <a href={`mailto:${site.email}`} class="underline decoration-1 underline-offset-4">{site.email}</a>
+    </div>
+
+    <button type="button" data-menu-toggle aria-expanded="false" aria-controls="site-menu" class="menu-btn lg:hidden">
+      <span data-menu-label>Menu</span><span class="burger" aria-hidden="true"><i></i><i></i></span>
+    </button>
   </div>
 </header>
+
+<!-- Floating controls, shown once the letterhead is off screen -->
+<a href="#" data-float aria-label="Back to top" class="float-ctl float-left is-hidden" tabindex="-1">
+  <Image src={mark} alt="" height={20} densities={[1, 2]} class="block h-5 w-auto" />
+</a>
+<div data-float class="float-ctl float-right is-hidden">
+  <button type="button" data-menu-toggle aria-expanded="false" aria-controls="site-menu" class="menu-btn bg-navy px-4 py-[13px] text-bone" tabindex="-1">
+    <span data-menu-label>Menu</span><span class="burger" aria-hidden="true"><i></i><i></i></span>
+  </button>
+</div>
+
+<div id="site-menu" data-menu-panel class="menu-panel" role="dialog" aria-modal="false" aria-label="Site menu" data-lenis-prevent>
+  <nav aria-label="Menu" class="grid">
+    {links.map((l) => (
+      <a href={l.href} data-nav-link class="menu-link">
+        <span class="menu-link-text">{l.label}</span>
+        {l.note && <span class="meta opacity-60">{l.note}</span>}
+      </a>
+    ))}
+  </nav>
+  <div class="mt-auto grid gap-3.5 pt-8">
+    <a href="#contact" class="btn btn-panel justify-between">{site.ctaLabel} <span aria-hidden="true">→</span></a>
+    <div class="meta flex flex-wrap justify-between gap-3">
+      <span>{site.email}</span>
+      <span data-clock data-tz={site.timeZone} data-place={place}>{site.location}</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Plain DOM so the menu works with or without the motion layer.
+  const root = document.documentElement;
+  const header = document.querySelector<HTMLElement>('[data-header]')!;
+  const panel = document.querySelector<HTMLElement>('[data-menu-panel]')!;
+  const floats = [...document.querySelectorAll<HTMLElement>('[data-float]')];
+  const toggles = [...document.querySelectorAll<HTMLButtonElement>('[data-menu-toggle]')];
+  const floatToggle = floats[1]?.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const wide = window.matchMedia('(min-width: 64rem)');
+  let headerVisible = true;
+  let open = false;
+  let opener: HTMLElement | null = null;
+
+  const syncFloats = () => {
+    const show = !headerVisible || open;
+    floats.forEach((el) => {
+      el.classList.toggle('is-hidden', !show);
+      el.querySelectorAll<HTMLElement>('a, button').forEach((c) => (c.tabIndex = show ? 0 : -1));
+      if (el.tagName === 'A') el.tabIndex = show ? 0 : -1;
+    });
+  };
+
+  const setMenu = (next: boolean) => {
+    if (next === open) return;
+    open = next;
+    panel.classList.toggle('is-open', open);
+    root.classList.toggle('menu-open', open && !wide.matches);
+    toggles.forEach((b) => {
+      b.setAttribute('aria-expanded', String(open));
+      b.classList.toggle('is-open', open);
+      b.querySelector('[data-menu-label]')!.textContent = open ? 'Close' : 'Menu';
+    });
+    syncFloats();
+    if (open) {
+      opener = document.activeElement as HTMLElement;
+      // The floating button sits above the panel, so it becomes the close control
+      requestAnimationFrame(() => floatToggle?.focus({ preventScroll: true }));
+    } else if (opener && document.contains(opener)) {
+      opener.focus({ preventScroll: true });
+    }
+  };
+
+  toggles.forEach((b) => b.addEventListener('click', () => setMenu(!open)));
+  panel.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setMenu(false)));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && open) setMenu(false);
+  });
+  document.addEventListener('click', (e) => {
+    const t = e.target as HTMLElement;
+    if (open && !panel.contains(t) && !t.closest('[data-menu-toggle]')) setMenu(false);
+  });
+  wide.addEventListener('change', () => root.classList.toggle('menu-open', open && !wide.matches));
+
+  new IntersectionObserver(([entry]) => {
+    headerVisible = entry.isIntersecting;
+    syncFloats();
+  }).observe(header);
+
+  // Mark the section in view in both the letterhead and the menu
+  const navLinks = [...document.querySelectorAll<HTMLAnchorElement>('[data-nav-link]')];
+  const sections = [...new Set(navLinks.map((a) => a.getAttribute('href')!))]
+    .map((id) => document.querySelector<HTMLElement>(id))
+    .filter((el): el is HTMLElement => !!el);
+  const inView = new Set<string>();
+  const spy = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => (e.isIntersecting ? inView.add(e.target.id) : inView.delete(e.target.id)));
+      const current = sections.find((s) => inView.has(s.id))?.id;
+      navLinks.forEach((a) => a.classList.toggle('is-current', a.getAttribute('href') === `#${current}`));
+    },
+    { rootMargin: '-45% 0px -50% 0px' },
+  );
+  sections.forEach((s) => spy.observe(s));
+</script>

@@ -57,7 +57,122 @@
   }
   .btn-navy:hover { @apply bg-navy text-bone border-navy; }
   .btn-bone:hover { @apply bg-bone text-navy border-bone; }
+  .btn-panel { @apply bg-bone text-navy border-bone; }
+  .btn-panel:hover { @apply bg-transparent text-bone; }
 }
+
+@layer components {
+/* ---------- Header: letterhead, floating controls, menu ---------- */
+:root { --ease-out: cubic-bezier(0.2, 0.7, 0.1, 1); }
+
+.lh-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  text-decoration: none;
+}
+.lh-arrow {
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity 0.25s, transform 0.35s var(--ease-out);
+}
+.lh-link:hover .lh-arrow,
+.lh-link:focus-visible .lh-arrow,
+.lh-link.is-current .lh-arrow { opacity: 1; transform: none; }
+
+.menu-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.burger { position: relative; width: 22px; height: 10px; }
+.burger i {
+  position: absolute;
+  inset-inline: 0;
+  height: 1.5px;
+  background: currentColor;
+  transition: transform 0.4s var(--ease-out), top 0.4s var(--ease-out);
+}
+.burger i:first-child { top: 0; }
+.burger i:last-child { top: 8.5px; }
+.is-open .burger i:first-child { top: 4.25px; transform: rotate(45deg); }
+.is-open .burger i:last-child { top: 4.25px; transform: rotate(-45deg); }
+
+.float-ctl {
+  position: fixed;
+  z-index: 50;
+  top: calc(16px + env(safe-area-inset-top, 0px));
+  display: flex;
+  transition: transform 0.5s var(--ease-out), opacity 0.35s;
+}
+.float-ctl.is-hidden { transform: translateY(-140%); opacity: 0; pointer-events: none; }
+.float-left {
+  left: max(16px, env(safe-area-inset-left, 0px));
+  border: 1px solid var(--color-rule);
+  background: var(--color-bone);
+  padding: 9px 12px;
+}
+.float-right { right: max(16px, env(safe-area-inset-right, 0px)); }
+@media (width >= 64rem) {
+  .float-ctl { top: calc(20px + env(safe-area-inset-top, 0px)); }
+  .float-left { left: max(24px, env(safe-area-inset-left, 0px)); }
+  .float-right { right: max(24px, env(safe-area-inset-right, 0px)); }
+}
+
+/* Phone: full screen. Desktop: a panel that drops from the Menu button. */
+.menu-panel {
+  position: fixed;
+  z-index: 45;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  background: var(--color-navy);
+  color: var(--color-bone);
+  padding: calc(88px + env(safe-area-inset-top, 0px)) max(20px, env(safe-area-inset-right, 0px)) calc(28px + env(safe-area-inset-bottom, 0px)) max(20px, env(safe-area-inset-left, 0px));
+  visibility: hidden;
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 0.6s var(--ease-out), visibility 0s 0.6s;
+}
+.menu-panel.is-open { visibility: visible; clip-path: inset(0); transition: clip-path 0.6s var(--ease-out); }
+@media (width >= 64rem) {
+  .menu-panel {
+    inset: calc(12px + env(safe-area-inset-top, 0px)) max(12px, env(safe-area-inset-right, 0px)) auto auto;
+    width: 400px;
+    max-height: calc(100dvh - 24px);
+    padding: 76px 24px 24px;
+  }
+}
+.menu-link {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  overflow: hidden;
+  border-bottom: 1px solid rgb(234 230 223 / 0.22);
+  padding-block: 6px;
+  font-size: clamp(40px, 12vw, 48px);
+  font-weight: 550;
+  letter-spacing: -0.04em;
+  line-height: 1.12;
+  text-decoration: none;
+}
+@media (width >= 64rem) { .menu-link { font-size: 40px; } }
+.menu-link-text { display: block; transform: translateY(105%); transition: transform 0.6s var(--ease-out); }
+.menu-link.is-current .menu-link-text::after { content: " ←"; font-weight: 400; }
+.is-open .menu-link-text { transform: none; }
+.is-open .menu-link:nth-child(2) .menu-link-text { transition-delay: 0.06s; }
+.is-open .menu-link:nth-child(3) .menu-link-text { transition-delay: 0.12s; }
+.is-open .menu-link:nth-child(4) .menu-link-text { transition-delay: 0.18s; }
+}
+.menu-open, .menu-open body { overflow: hidden; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; }
